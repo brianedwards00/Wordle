@@ -28,10 +28,10 @@ Step 6. Run `./traefik --configFile=traefik.toml`
 
 Instructions to start the service:
 
-Step 7. On ANOTHER TERMINAL, but still in the same directory as in STEP 3, run `foreman start -m api_word=1,api_guess=1,api_stats=3,api_track=1`
+Step 7. On ANOTHER TERMINAL, but still in the same directory as in STEP 3, run `foreman start -m api_word=1,api_guess=1,api_stats=3,api_track=1,api_play=1`
 
 Step 8. For each of the 4 services, 
-look at `http://localhost:9999/api/word/docs`, `http://localhost:9999/api/guess/docs`, `http://localhost:9999/api/stats/docs`, `http://localhost:9999/api/track/docs`.
+look at `http://localhost:9999/api/word/docs`, `http://localhost:9999/api/guess/docs`, `http://localhost:9999/api/stats/docs`, `http://localhost:9999/api/track/docs`, `http://localhost:9999/api/play/docs`.
   
   Note: For /stats/doc, you should see on the command line that the load balancer is working for every refresh or other HTTP method
   
