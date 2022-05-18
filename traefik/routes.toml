@@ -1,0 +1,67 @@
+[http]
+  [http.middlewares]
+
+    [http.middlewares.api-stripprefix.stripPrefix]
+      prefixes = ["/api/word", "/api/guess", "/api/stats", "/api/track","/api/play"]
+
+  [http.routers]
+    [http.routers.word]
+      entryPoints = ["http"]
+      service = "word"
+      rule = "PathPrefix(`/api/word`)"
+      middlewares = ["api-stripprefix"]
+      
+    [http.routers.guess]
+      entryPoints = ["http"]
+      service = "guess"
+      rule = "PathPrefix(`/api/guess`)"
+      middlewares = ["api-stripprefix"]
+      
+    [http.routers.stats]
+      entryPoints = ["http"]
+      service = "stats"
+      rule = "PathPrefix(`/api/stats`)"
+      middlewares = ["api-stripprefix"]
+   
+    [http.routers.track]
+      entryPoints = ["http"]
+      service = "track"
+      rule = "PathPrefix(`/api/track`)"
+      middlewares = ["api-stripprefix"]
+      
+    [http.routers.play]
+      entryPoints = ["http"]
+      service = "play"
+      rule = "PathPrefix(`/api/play`)"
+      middlewares = ["api-stripprefix"]
+      
+      
+[http.services]
+    [http.services.word]
+      [http.services.word.loadBalancer]
+        [[http.services.word.loadBalancer.servers]]
+          url = "http://127.0.0.1:5000"
+          
+    [http.services.guess]
+      [http.services.guess.loadBalancer]
+        [[http.services.guess.loadBalancer.servers]]
+          url = "http://127.0.0.1:5100"
+
+    [http.services.stats]
+      [http.services.stats.loadBalancer]
+        [[http.services.stats.loadBalancer.servers]]
+          url = "http://127.0.0.1:5200"
+        [[http.services.stats.loadBalancer.servers]]
+          url = "http://127.0.0.1:5201"
+        [[http.services.stats.loadBalancer.servers]]
+          url = "http://127.0.0.1:5202"
+    
+    [http.services.track]
+      [http.services.track.loadBalancer]
+        [[http.services.track.loadBalancer.servers]]
+          url = "http://127.0.0.1:5300"
+          
+    [http.services.play]
+      [http.services.play.loadBalancer]
+        [[http.services.play.loadBalancer.servers]]
+          url = "http://127.0.0.1:5400"

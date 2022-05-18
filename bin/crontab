@@ -1,0 +1,2 @@
+*/10 * * * *  /usr/bin/python3 /home/student/Desktop/4project/bin/materialize.py >> /tmp/materialize.log 2>&1
+
