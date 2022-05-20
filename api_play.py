@@ -9,6 +9,9 @@ from pydantic import UUID4, BaseModel
 import datetime
 import random
 
+
+won = False
+
 class Guess(BaseModel):
     user_id: UUID
     guess_word: str
@@ -40,7 +43,7 @@ async def one_guess(userGame: UserGame):
             json={'user_id':str(userGame.user_id), 'game_id':game_id})
         if new_game.status_code == httpx.codes.NOT_FOUND:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User does not exist."
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not playing a game."
             )
         elif new_game.status_code == httpx.codes.BAD_REQUEST:
             print("You already played this. Trying another id....")
@@ -49,8 +52,7 @@ async def one_guess(userGame: UserGame):
     return {"status":"new","user_id":userGame.user_id, "game_id":game_id}
 
 
-# We are assuming the client sends the game id's corresponding date to the backend
-# guess date is the true id because the code is structured to have one word correspond to one day
+# We are assuming the client sends the correct game id because it was provided in /game/new
 @play.post("/game/{game_id}", status_code=status.HTTP_201_CREATED)
 async def one_guess(guess: Guess, game_id, response: Response):
     check_guess = httpx.post('http://localhost:9999/api/track/restore_game', params={'user_id':guess.user_id})
@@ -90,6 +92,8 @@ async def one_guess(guess: Guess, game_id, response: Response):
                 status_code=status.HTTP_404_NOT_FOUND, detail="User does not exist."
             )
         get_stats = httpx.get('http://localhost:9999/api/stats/stats', params={'user_id': '{}'.format(str(guess.user_id))})
+        for i in range(0,5):
+            update_game = httpx.post('http://localhost:9999/api/track/update_game', params={'user_id':guess.user_id, 'input_word':guess.guess_word})
         return {"user_id": guess.user_id,"status":"win", "stats":get_stats.json(), "analysis":analyze_guess.json()['analysis']}
         
     else:
