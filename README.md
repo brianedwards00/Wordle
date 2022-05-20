@@ -1,7 +1,7 @@
 # 449Project4
 Members: 
 Allison Atienza,
-Yujin Chung
+Yujin Chung,
 Brian Edwards
 
 Instructions to initialize the databases:
