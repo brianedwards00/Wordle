@@ -1,4 +1,4 @@
-# 449Project4
+# 449Project5
 Members: 
 Allison Atienza,
 Yujin Chung,
@@ -31,6 +31,7 @@ Step 7. On ANOTHER TERMINAL, but still in the same directory as in STEP 3, run `
 
 Step 8. For each of the 4 services, 
 look at `http://localhost:9999/api/word/docs`, `http://localhost:9999/api/guess/docs`, `http://localhost:9999/api/stats/docs`, `http://localhost:9999/api/track/docs`, `http://localhost:9999/api/play/docs`.
+(project5 is the Play API)
   
   Note: For /stats/doc, you should see on the command line that the load balancer is working for every refresh or other HTTP method
   
