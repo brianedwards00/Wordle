@@ -149,7 +149,7 @@ async def get_stats(user_id: UUID, response: Response):
                 current_streak = 1
         else:
             current_streak = current_streak_query[0][0]
-        
+            
         # maxStreak
         streak_query = cursor.execute("SELECT * FROM streaks WHERE user_id = ?", [user_id.bytes_le]).fetchall()
         if not streak_query:
@@ -167,11 +167,14 @@ async def get_stats(user_id: UUID, response: Response):
                 guess_array[x[3]-1] += 1
         guesses = {"1": guess_array[0], "2": guess_array[1], "3": guess_array[2], "4": guess_array[3],
             "5": guess_array[4], "6": guess_array[5], "fail": guess_array[6]}
-        
+
         # gamesPlayed, gamesWon, winPercentage
         total_games = len(games_query)
-        wins_query = cursor.execute("SELECT * FROM wins WHERE user_id = ?", [user_id.bytes_le]).fetchone()[1]
-        
+        try:
+            wins_query = cursor.execute("SELECT * FROM wins WHERE user_id = ?", [user_id.bytes_le]).fetchone()[1]
+        except:
+            wins_query = 0
+
         # averageGuesses
         total_guess = 0
         for x in range(6):
@@ -179,10 +182,16 @@ async def get_stats(user_id: UUID, response: Response):
         win_guess = 0
         for x in range(6):
             win_guess += guess_array[x]
+        average_guesses = 0
+        try:
+            average_guesses = round(total_guess/win_guess)
+        except:
+            print("You never won a game yet....")
         con.close()
+        
         return {"currentStreak": current_streak, "maxStreak": max_streak[1], "guesses": guesses,
             "winPercentage":round(wins_query/total_games,2) , "gamesPlayed": total_games, "gamesWon": wins_query,
-            "averageGuesses": round(total_guess/win_guess)}
+            "averageGuesses": average_guesses}
     except:
         con.close()
         raise HTTPException(

@@ -8,18 +8,19 @@ from datetime import datetime
 check = FastAPI()
 
 @check.get("/guess", status_code=status.HTTP_200_OK)
-async def analyze_guess(guess_date: str, input: str):
+async def analyze_guess(guess_id: int, input: str):
     guess_word = input.lower()
     con = sqlite3.connect('./database/wordle.db', check_same_thread=False)
     cursor = con.cursor()
     try:
-        actual_word = cursor.execute("SELECT answer FROM wordle WHERE answer_date = ?", [guess_date]).fetchone()[0]
+        actual_word = cursor.execute("SELECT answer FROM wordle WHERE id = ?", [guess_id]).fetchone()[0]
         con.close()
     except:
         con.close()
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid date"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid id"
         )
+    print(actual_word)
     actual_counter = 0
     pre_analysis = ["red"] * 5
     for actual_l in actual_word:
@@ -33,4 +34,4 @@ async def analyze_guess(guess_date: str, input: str):
         actual_counter += 1
     analysis = pre_analysis
     
-    return {"guess_date": guess_date, "input": input.lower(), "analysis": analysis}
+    return {"guess_id": guess_id, "input": input.lower(), "analysis": analysis}

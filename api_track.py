@@ -40,7 +40,6 @@ async def new_game(sess:Session, response: Response):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Invalid user"
         )
-  
     con = sqlite3.connect(f'./database/games{(sess.user_id.int % 3) + 1}.db')
     cursor = con.cursor()
     try:
@@ -105,7 +104,7 @@ async def update_game(user_id: UUID, response: Response):
     print(user_guess_info)
     if len(user_guess_info) == 0:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User is not playing any game"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="User is not playing any game"
         )
     guess_dict = {}
     for i in range(2,8):
