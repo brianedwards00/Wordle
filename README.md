@@ -1,9 +1,8 @@
 # 449Project4
 Members: 
-Cesar Martinez Melgoza,
-Brian Edwards,
-Maia Nguyen,
 Allison Atienza,
+Yujin Chung
+Brian Edwards
 
 Instructions to initialize the databases:
 
